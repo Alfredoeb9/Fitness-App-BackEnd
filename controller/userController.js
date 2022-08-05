@@ -11,8 +11,10 @@ const signupUser =  async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
   try {
+    // fire up the signup function from the userModel
     const user = await User.signup(firstName, lastName, email, password)
 
+    // return the users info down below
     res.status(200).json({ firstName, lastName, email, user })
   } catch(error) {
     res.status(400).json({ error: error.message })

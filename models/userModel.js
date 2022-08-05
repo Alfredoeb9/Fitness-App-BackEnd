@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require("bcrypt")
+const validator = require("validator")
 const Schema = mongoose.Schema
 
 // Basic Schema that checks if the data structure
@@ -29,6 +30,17 @@ userSchema.statics.signup = async function(firstName, lastName, email, password)
 
   // Find an email within the database
   const exists = await this.findOne({ email })
+
+  // Validation
+  if (!email || !password) {
+    throw Error("All fieldss must be filled")
+  }
+  if (!validator.isEmail(email)) {
+    throw Error("Email is not valid")
+  }
+  if (!validator.isStrongPassword(password)) {
+    throw Error("Password not strong enough")
+  }
 
   // if it exists then throw error
   if (exists) {
